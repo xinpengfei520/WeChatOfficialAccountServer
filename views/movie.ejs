@@ -41,7 +41,8 @@
       <div class="card-group">
         <% data.forEach(function (item, index) { %>
           <div class="card">
-          <img class="card-img-top" src="http://image.x-sir.com/<%= item.posterKey %>/imageMogr2/thumbnail/1080x1092!" alt="Card image cap"
+            <!-- ?imageView2/1/w/1080/h/1920/q/75 为七牛云中的图片处理样式，需要在七牛云控制台设置图片的请求样式，如果没有设置样式，会请求不到图片 -->
+          <img class="card-img-top" src="http://image.x-sir.com/<%= item.posterKey %>?imageView2/1/w/1080/h/1920/q/75" alt="Card image cap"
             data-coverkey="http://image.x-sir.com/<%= item.coverKey %>"
             data-videokey="http://image.x-sir.com/<%= item.videoKey %>"
             data-id="<%= item.doubanId %>"
