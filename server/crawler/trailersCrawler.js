@@ -30,14 +30,12 @@ module.exports = async () => {
         // $($('.coming_list tbody tr')[0]).find('td').last().html()
         for (let i = 0; i < $trs.length; i++) {
             const trDom = $trs[i];
-            // 获取想看的人数
-            let num = parseInt($(trDom).find('td').last().html());
-            // 判断 num 的大小
-            if (num > 100) {
-                // 想看人数大于 100，电影才较好
+            // 获取想看的人数(解析出字符串中的数字)
+            let wantedNum = parseInt($(trDom).find('td').last().html());
+            // 判断 wantedNum 的大小，想看人数大于 100，电影才较好
+            if (wantedNum > 100) {
                 // 电影详情页面
                 let href = $(trDom).find('a').attr('href');
-
                 result.push(href);
             }
         }
@@ -138,14 +136,13 @@ module.exports = async () => {
 
         // 跳转到电影详情页
         await page.goto(url, {
-            waitUntil: 'networkidle2'  //等待网络空闲时，在跳转加载页面
+            waitUntil: 'networkidle2'  // 等待网络空闲时，在跳转加载页面
         });
 
         // 爬取其他数据
         item.link = await page.evaluate(() => {
             // 电影链接
-            let link = $('video>source').attr('src')
-            return link
+            return $('video>source').attr('src');
         })
     }
 

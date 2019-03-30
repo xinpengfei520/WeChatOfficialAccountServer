@@ -8,10 +8,11 @@ const upload = require('./upload');
 const nanoid = require('nanoid');
 
 module.exports = async (key, Model) => {
+
     /*
-      1. 获取数据库中的图片链接
-      2. 上传到七牛中
-      3. 保存 key 到数据库中
+     * 1. 获取数据库中的图片链接
+     * 2. 上传到七牛中
+     * 3. 保存 key 到数据库中
      */
 
     // 去数据库中找所有没有上传图片的文档对象

@@ -36,7 +36,7 @@ module.exports = async message => {
                 content.push({
                     title: item.title,
                     description: item.summary,
-                    picUrl: `http://peicjnx2h.bkt.clouddn.com/${item.posterKey}`,
+                    picUrl: `http://image.x-sir.com/${item.posterKey}`,
                     url: `${url}/detail/${item.doubanId}`
                 })
             }
