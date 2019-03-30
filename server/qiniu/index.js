@@ -25,8 +25,6 @@ module.exports = async (key, Model) => {
         ]
     });
 
-    console.log(movies);
-
     // 遍历每一条数据
     for (let i = 0; i < movies.length; i++) {
         // 获取每一个文档对象
@@ -34,22 +32,28 @@ module.exports = async (key, Model) => {
 
         // 初始化两个值
         let url = movie.image;
-        let filename = '.jpg';
+        let fileName = '.jpg'; // default file name
         // 上传图片到七牛
         if (key === 'coverKey') {
             url = movie.cover;
         } else if (key === 'videoKey') {
             url = movie.link;
-            filename = '.mp4';
+            fileName = '.mp4';
         }
 
         // 文件名
-        filename = `${nanoid(10)}${filename}`;
+        fileName = `${nanoid(10)}${fileName}`;
 
-        await upload(url, filename);
+        // 此处必须判断 undefined 防止报：
+        // TypeError: First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object
+        if (typeof (url) == "undefined") {
+            console.log('url undefined!');
+        } else {
+            await upload(url, fileName);
+        }
 
         // 保存 key 到数据库中
-        movie[key] = filename;
+        movie[key] = fileName;
 
         await movie.save();
     }

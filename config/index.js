@@ -7,5 +7,5 @@ module.exports = {
     // 微信公众号的 appSecret
     appSecret: '5d55a5f58a908d15bfed95c05de37413',
     // 服务器外网 ip
-    url: 'http://a3200ee5.ngrok.io'
+    url: 'http://792331fd.ngrok.io'
 };

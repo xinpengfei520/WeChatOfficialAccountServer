@@ -21,8 +21,8 @@ module.exports = {
             "sub_button": [
                 {
                     "type": "view",
-                    "name": "个人网站",
-                    "url": "http://www.x-sir.com"
+                    "name": "个人博客",
+                    "url": "https://blog.csdn.net/xinpengfei521"
                 },
                 {
                     "type": "click",

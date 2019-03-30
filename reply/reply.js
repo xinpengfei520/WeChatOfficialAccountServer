@@ -46,7 +46,7 @@ module.exports = async message => {
             content = [{
                 title: '电影预告片首页',
                 description: '这里有最新的电影预告片~',
-                picUrl: 'http://www.x-sir.com/images/logo.jpg',
+                picUrl: 'https://mmbiz.qpic.cn/mmbiz_jpg/Fibvp8KrdOR1F5Oy4XoYYkbIu3kwSibQm9LzicZeKqB1Lm0sA96xjOG0epd6wX78EOml4BkrxHj2FXwhsHcYwk2Tg/0?wx_fmt=jpeg',
                 url: `${url}/movie`
             }];
 
@@ -109,21 +109,23 @@ module.exports = async message => {
         if (message.Event === 'subscribe') {
             // 用户订阅事件
             content = '欢迎您关注~ \n' +
-                '回复 首页 查看电影预告片 \n' +
-                '回复 热门 查看热门电影 \n' +
-                '回复 文本 搜索电影信息 \n' +
-                '回复 语音 搜索电影信息 \n' +
-                '也可以点击下面菜单按钮，来了解更多功能';
+                '回复「首页」查看电影预告片\n' +
+                '回复「热门」查看热门的电影\n' +
+                '回复「片名」搜索对应片名的电影\n' +
+                '回复「语音」语音搜索电影信息\n' +
+                '您还可以点击下面的菜单按钮，来了解更多功能哟~'
         } else if (message.Event === 'unsubscribe') {
             // 用户取消订阅事件
             console.log('无情取关~');
         } else if (message.Event === 'CLICK') {
-            content = '您可以按照以下提示来进行操作~ \n' +
-                '回复 首页 查看电影预告片 \n' +
-                '回复 热门 查看热门的电影 \n' +
-                '回复 文本 搜索电影信息 \n' +
-                '回复 语音 搜索电影信息 \n' +
-                '也可以点击下面菜单按钮，来了解更多功能'
+            content = '您可回复以下关键字来获取您想要的内容：\n' +
+                '回复「首页」查看电影预告片\n' +
+                '回复「热门」查看热门的电影\n' +
+                '回复「片名」搜索对应片名的电影\n' +
+                '回复「语音」语音搜索电影信息\n' +
+                '您还可以点击下面的菜单按钮，来了解更多功能哟~'
+        } else if (message.Event === 'VIEW') {
+            console.log('message.Event === \'VIEW\'');
         }
     }
 

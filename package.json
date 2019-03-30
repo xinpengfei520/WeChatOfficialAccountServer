@@ -9,6 +9,7 @@
   "author": "x-sir",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-serve-static-core": "^0.1.1",
     "mongoose": "^5.4.19",
