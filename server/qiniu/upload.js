@@ -2,12 +2,14 @@
  * 将爬取的图片上传到七牛云
  */
 
+// 加载 .env 中的环境变量
+require('dotenv').config();
 // 引入 qiniu 模块
 const qiniu = require('qiniu');
 
-// accessKey & secretKey 替换为自己的
-const accessKey = '9UmdsQlqmicKAU6-4iO6DWwVKYP17z050mOflR5J';
-const secretKey = 'yjnugb180GisuCM-uU3jNMI2VZCdvqgCut-d9Tbm';
+// accessKey & secretKey 从环境变量读取
+const accessKey = process.env.QINIU_ACCESS_KEY;
+const secretKey = process.env.QINIU_SECRET_KEY;
 
 // 定义鉴权对象
 const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
@@ -18,7 +20,7 @@ config.zone = qiniu.zone.Zone_z0;
 // bucketManager 对象上就有所有的方法
 const bucketManager = new qiniu.rs.BucketManager(mac, config);
 // 存储空间的名称(换为自己在七牛上建的存储空间的名称)
-const bucket = 'wechat';
+const bucket = process.env.QINIU_BUCKET || 'wechat';
 
 module.exports = (resUrl, key) => {
     /*
