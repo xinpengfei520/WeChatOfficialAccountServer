@@ -2,8 +2,8 @@
  * 处理用户发送的消息类型和内容，决定返回不同的内容给用户
  */
 
-// 引入 rp
-const rp = require('request-promise-native');
+// 引入 axios（替代已废弃的 request-promise-native）
+const axios = require('axios');
 // 引入 Theaters
 const Theaters = require('../model/Theaters');
 // 引入 config
@@ -54,7 +54,7 @@ module.exports = async message => {
 
             const url = `${douBanApi.search}`;
             // 发送请求
-            const data = await rp({method: 'GET', url, json: true, qs: {q: message.Content, count: 8}});
+            const {data} = await axios.get(url, {params: {q: message.Content, count: 8}});
             const subjects = data.subjects;
             console.log(data);
 
@@ -84,7 +84,7 @@ module.exports = async message => {
         console.log(message.Recognition);
         const url = `${douBanApi.search}`;
         // 发送请求
-        const {subjects} = await rp({method: 'GET', url, json: true, qs: {q: message.Recognition, count: 8}});
+        const {data: {subjects}} = await axios.get(url, {params: {q: message.Recognition, count: 8}});
         // 判断 subjects 是否有值
         if (subjects && subjects.length) {
             // 说明有数据,返回一个图文消息给用户

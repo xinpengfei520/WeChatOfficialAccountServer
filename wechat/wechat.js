@@ -35,11 +35,39 @@
  *  - 发送请求获取access_token(getAccessToken)，保存下来（本地文件）(saveAccessToken)，直接使用
  */
 
-// 引入 request-promise-native
-const rp = require('request-promise-native');
-const request = require('request');
+// 引入 axios 及 form-data（替代已废弃的 request / request-promise-native）
+const axios = require('axios');
+const FormData = require('form-data');
 // 引入 fs 模块
 const {createReadStream, createWriteStream} = require('fs');
+
+/**
+ * 兼容旧 request-promise-native 调用方式的轻量封装：返回响应体。
+ * 支持 body（JSON 请求体）与 formData（multipart 上传）。
+ */
+function rp({method = 'GET', url, body, formData}) {
+    let data = body;
+    let headers = {};
+    if (formData) {
+        const form = new FormData();
+        Object.keys(formData).forEach(key => form.append(key, formData[key]));
+        data = form;
+        headers = form.getHeaders();
+    }
+    return axios({method, url, data, headers}).then(res => res.data);
+}
+
+/**
+ * 以流的方式下载远程资源并写入本地文件（替代旧的 request(...).pipe(...)）。
+ */
+function downloadToFile({method = 'GET', url, body}, filePath) {
+    return axios({method, url, data: body, responseType: 'stream'})
+        .then(res => new Promise((resolve, reject) => {
+            res.data.pipe(createWriteStream(filePath))
+                .once('close', resolve)
+                .once('error', reject);
+        }));
+}
 // 引入 path 模块
 const {resolve, join} = require('path');
 // 引入 config 模块
@@ -369,12 +397,9 @@ class Wechat {
                 // 返回出去
                 resolve(data);
             } else {
-                // 其他类型文件
-                request(url)
-                    .pipe(createWriteStream(filePath))
-                    // 当文件读取完毕时，可读流会自动关闭，一旦关闭触发 close 事件，
-                    // 从而调用 resolve 方法通知外部文件读取完毕了
-                    .once('close', resolve)
+                // 其他类型文件，以流的方式下载到本地
+                // 下载完成（写入流 close）后 resolve 通知外部文件已就绪
+                downloadToFile({method: 'GET', url}, filePath).then(resolve).catch(reject);
             }
         })
     }
@@ -451,9 +476,8 @@ class Wechat {
                     const data = await rp(options);
                     resolve(data);
                 } else {
-                    request(options)
-                        .pipe(createWriteStream(join(__dirname, '../media', fileName)))
-                        .once('close', resolve)
+                    // 以流的方式下载素材到本地
+                    downloadToFile(options, join(__dirname, '../media', fileName)).then(resolve).catch(reject);
                 }
             } catch (e) {
                 reject('getPermanentMaterial方法出了问题：' + e);

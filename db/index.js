@@ -4,8 +4,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 module.exports = new Promise((resolve, reject) => {
-    // 连接数据库
-    mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/DouBan', {useNewUrlParser: true});
+    // 连接数据库（mongoose 8 已移除 useNewUrlParser/useUnifiedTopology 等旧选项）
+    mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/DouBan');
     // 绑定事件监听
     mongoose.connection.once('open', err => {
         if (!err) {

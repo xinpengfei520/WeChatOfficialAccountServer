@@ -4,8 +4,8 @@
 
 // 上传图片到七牛中方法
 const upload = require('./upload');
-// 生成唯一的 key 方法
-const nanoid = require('nanoid');
+// 生成唯一的 key 方法（nanoid v3 改为具名导出）
+const {nanoid} = require('nanoid');
 
 module.exports = async (key, Model) => {
 
